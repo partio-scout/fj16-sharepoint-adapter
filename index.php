@@ -7,7 +7,7 @@ use Thybag\SharePointAPI;
 
 $conf = $fj16_sharepoint_config; // shorthand
 
-if(empty($conf['secret']) || $conf['secret'] !== $_GET['secret']) {
+if(empty($conf['secret']) || empty($_GET['secret']) || $conf['secret'] !== $_GET['secret']) {
   header('HTTP/1.0 401 Unauthorized');
   die('Incorrect secret token');
 }
