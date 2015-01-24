@@ -16,6 +16,29 @@ header('Content-Type: application/json');
 
 $sp = new SharePointAPI($conf['username'], $conf['password'], $conf['wsdl_url'], $conf['auth_variant']);
 
-$pestit = $sp->query($conf['job_list_guid'])->all_fields()->get();
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $application = json_decode(file_get_contents('php://input'), TRUE);
+  
+  if(empty($application['Title'])) {
+    header('HTTP/1.0 400 Bad request');
+    die("Can't parse JSON body");
+  }
 
-print json_encode($pestit);
+  $res = $sp->write($conf['application_list_guid'], $application);
+
+  // Check that returned result contains error code 0
+  $success = strpos($res['raw_xml'], '0x00000000') !== FALSE;
+
+  if($success) {
+    print json_encode(array('result' => 'OK'));
+    die();
+  } else {
+    header('HTTP/1.0 503 Bad gateway');
+    print json_encode(array('error' => $res['raw_xml']));
+    die();
+  }
+
+} else {
+  $jobs = $sp->query($conf['job_list_guid'])->all_fields()->get();
+  print json_encode($jobs);  
+}
