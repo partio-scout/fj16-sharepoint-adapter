@@ -14,7 +14,9 @@ if(empty($conf['secret']) || empty($_GET['secret']) || $conf['secret'] !== $_GET
 
 header('Content-Type: application/json');
 
-$sp = new SharePointAPI($conf['username'], $conf['password'], $conf['wsdl_url'], $conf['auth_variant']);
+$wsdl_location = './wsdl.xml';
+
+$sp = new SharePointAPI($conf['username'], $conf['password'], $wsdl_location, $conf['auth_variant']);
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
   $application = json_decode(file_get_contents('php://input'), TRUE);

@@ -34,6 +34,7 @@ class SharePointOnlineAuth extends \SoapClient {
 
 		curl_setopt($curl, CURLOPT_TIMEOUT, 10);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($curl, CURLOPT_SSLVERSION, 1);
 
 		// Useful for debugging
 		curl_setopt($curl, CURLOPT_VERBOSE,FALSE);
@@ -165,6 +166,7 @@ class SharePointOnlineAuth extends \SoapClient {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_SSLVERSION, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 
 		if($header)  curl_setopt($ch, CURLOPT_HEADER, true);
